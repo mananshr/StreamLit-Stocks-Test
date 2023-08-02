@@ -38,7 +38,6 @@ with column1:
             "NVDA",
             "ORCL",
             "PG",
-            "SPPI",
             "TSLA",
             "TSM",
             "V",

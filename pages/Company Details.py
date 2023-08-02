@@ -32,7 +32,6 @@ symbol = st.selectbox(
         "NVDA",
         "ORCL",
         "PG",
-        "SPPI",
         "TSLA",
         "TSM",
         "V",
@@ -87,22 +86,27 @@ ticker_data = yfinance.Ticker(symbol)
 info = ticker_data.info
 longName = info.get("longName")
 f"# {longName}"
-
+path = 'D:\Code\PY\StreamlitTest2\\'
 # print(info)
 
-column1, column2, column3, column4 = st.columns(4)
+column1, column2 = st.columns(2, gap="large")
 with column1:
-    pass
+    image_path = path+"images\\"+symbol+"\\logo"
+    image_path = image_path + "\\" + os.listdir(image_path)[0]
+    image = Image.open(image_path)
+    # new_image = Image.new("RGB", image.size, "WHITE") # Create a white rgba background
+    # new_image.paste(image, mask=image)
+    st.image(image)
 with column2:
-    pass
-with column3:
-    pass
-with column4:
-    pass
+    industry = info.get("industry")
+    sector = info.get("sector")
+    if(sector!=None):
+        f"## {sector}"
+    if(industry!=None):
+         f"### {industry}"
 
 try:
     longBusinessSummary = info.get("longBusinessSummary")
-    print(longBusinessSummary)
     if(longBusinessSummary!=None):
         st.write(longBusinessSummary)
 except:
@@ -119,7 +123,6 @@ try:
     companyOfficerTitle = companyOfficers[0].get("title")
 
     "# The Board"
-    path = 'D:\Code\PY\StreamlitTest2\\'
 
     for i in range(len(companyOfficers)):
         companyOfficer = companyOfficers[i]
