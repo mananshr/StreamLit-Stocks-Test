@@ -59,6 +59,8 @@ symbols = [
 #
 #         return '{}.{}'.format(filename, extension)
 
+# symbols = ["V"]
+
 for symbol in symbols:
     ticker_data = yfinance.Ticker(symbol)
     info = ticker_data.info
@@ -67,10 +69,11 @@ for symbol in symbols:
 
     for companyOfficer in companyOfficers:
         companyOfficerName = companyOfficer.get("name")
-        google_crawler = GoogleImageCrawler(feeder_threads=1, parser_threads=1, downloader_threads=1,storage={'root_dir': 'images\\'+symbol+"\\"+companyOfficerName})
+        filters = dict(size='large', type='face')
+        google_crawler = GoogleImageCrawler( feeder_threads=1, parser_threads=1, downloader_threads=1,storage={'root_dir': 'images\\'+symbol+"\\"+companyOfficerName})
         keyword=companyOfficerName+" "+ companyName
         print("Query: "+keyword)
-        google_crawler.crawl(keyword, max_num=1)
+        google_crawler.crawl(keyword, max_num=1, filters=filters)
         # path = 'D:\Code\PY\StreamlitTest2\\'
         # image_path = path+"images\\"+symbol
         # image_path = image_path + "\\" + os.listdir(image_path)[0]
