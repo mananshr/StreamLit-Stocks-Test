@@ -61,32 +61,24 @@ def resize_image(self, image: Image, length: int) -> Image:
     """
     if image.size[0] < image.size[1]:
         # The image is in portrait mode. Height is bigger than width.
-
         # This makes the width fit the LENGTH in pixels while conserving the ration.
         resized_image = image.resize((length, int(image.size[1] * (length / image.size[0]))))
-
         # Amount of pixel to lose in total on the height of the image.
         required_loss = (resized_image.size[1] - length)
-
         # Crop the height of the image so as to keep the center part.
         resized_image = resized_image.crop(
             box=(0, required_loss / 2, length, resized_image.size[1] - required_loss / 2))
-
         # We now have a length*length pixels image.
         return resized_image
     else:
         # This image is in landscape mode or already squared. The width is bigger than the heihgt.
-
         # This makes the height fit the LENGTH in pixels while conserving the ration.
         resized_image = image.resize((int(image.size[0] * (length / image.size[1])), length))
-
         # Amount of pixel to lose in total on the width of the image.
         required_loss = resized_image.size[0] - length
-
         # Crop the width of the image so as to keep 1080 pixels of the center part.
         resized_image = resized_image.crop(
             box=(required_loss / 2, 0, resized_image.size[0] - required_loss / 2, length))
-
         # We now have a length*length pixels image.
         return resized_image
 
@@ -96,20 +88,56 @@ info = ticker_data.info
 longName = info.get("longName")
 f"# {longName}"
 
-longBusinessSummary = info.get("longBusinessSummary")
-longBusinessSummary
+# print(info)
 
-companyOfficers = info.get("companyOfficers")
-companyOfficerName = companyOfficers[0].get("name")
-companyOfficerTitle = companyOfficers[0].get("title")
-#
+column1, column2, column3, column4 = st.columns(4)
+with column1:
+    pass
+with column2:
+    pass
+with column3:
+    pass
+with column4:
+    pass
+
+try:
+    longBusinessSummary = info.get("longBusinessSummary")
+    print(longBusinessSummary)
+    if(longBusinessSummary!=None):
+        st.write(longBusinessSummary)
+except:
+    pass
+
 # google_crawler = GoogleImageCrawler(feeder_threads=1,
 # parser_threads=1, downloader_threads=1,
 # storage={'root_dir': 'images\\'+symbol})
 # google_crawler.crawl(keyword=companyOfficerName, max_num=1)
 
-"# The Board"
-path = 'D:\Code\PY\StreamlitTest2\\'
+try:
+    companyOfficers = info.get("companyOfficers")
+    companyOfficerName = companyOfficers[0].get("name")
+    companyOfficerTitle = companyOfficers[0].get("title")
+
+    "# The Board"
+    path = 'D:\Code\PY\StreamlitTest2\\'
+
+    for i in range(len(companyOfficers)):
+        companyOfficer = companyOfficers[i]
+        # column1, column2 = st.columns(2)
+        companyOfficerName = companyOfficer.get("name")
+        companyOfficerTitle = companyOfficer.get("title")
+        column1, column2 = st.columns(2)
+        image_path = path+"images\\"+symbol+"\\"+companyOfficerName
+        image_path = image_path + "\\" + os.listdir(image_path)[0]
+        image = Image.open(image_path)
+        image = resize_image(image,image=image, length=1080)
+        # image.
+        column1.image(image)
+        with column2:
+            f"### {companyOfficerName}"
+            f"#### {companyOfficerTitle}"
+except:
+    "#### No officers listed here"
 # # image_path = os.getcwd()+"\\images\\"+symbol+"\\000001.jpg"
 # image_path = path+"images\\"+symbol+"\\"+companyOfficerName
 # image_path = image_path + "\\" + os.listdir(image_path)[0]
@@ -123,35 +151,18 @@ path = 'D:\Code\PY\StreamlitTest2\\'
 # with column2:
 #     f"## {companyOfficerName}"
 #     f"### {companyOfficerTitle}"
-
-for i in range(len(companyOfficers)):
-    companyOfficer = companyOfficers[i]
-    # column1, column2 = st.columns(2)
-    companyOfficerName = companyOfficer.get("name")
-    companyOfficerTitle = companyOfficer.get("title")
-    column1, column2 = st.columns(2)
-    image_path = path+"images\\"+symbol+"\\"+companyOfficerName
-    image_path = image_path + "\\" + os.listdir(image_path)[0]
-    image = Image.open(image_path)
-    image = resize_image(image,image=image, length=1080)
-    # image.
-    column1.image(image)
-    with column2:
-        f"### {companyOfficerName}"
-        f"#### {companyOfficerTitle}"
-
-        #     with column2:
-        #         companyOfficerName = companyOfficer.get("name")
-        #         companyOfficerTitle = companyOfficer.get("title")
-        #         column3, column4 = st.columns(2)
-        #         with column3:
-        #             image_path = path+"images\\"+symbol+"\\"+companyOfficerName
-        #             image_path = image_path + "\\" + os.listdir(image_path)[0]
-        #             image = Image.open(image_path)
-        #             st.image(image)
-        #         with column4:
-        #             f"### {companyOfficerName}"
-        #             f"#### {companyOfficerTitle}"
+#     with column2:
+#         companyOfficerName = companyOfficer.get("name")
+#         companyOfficerTitle = companyOfficer.get("title")
+#         column3, column4 = st.columns(2)
+#         with column3:
+#             image_path = path+"images\\"+symbol+"\\"+companyOfficerName
+#             image_path = image_path + "\\" + os.listdir(image_path)[0]
+#             image = Image.open(image_path)
+#             st.image(image)
+#         with column4:
+#             f"### {companyOfficerName}"
+#             f"#### {companyOfficerTitle}"
 
 
 # class MyImageDownloader(ImageDownloader):
