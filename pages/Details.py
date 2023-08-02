@@ -45,6 +45,7 @@ symbol = st.selectbox(
 # def deleteImages():
 #    os.remove(os.getcwd()+"\\images\\")
 
+
 ticker_data = yfinance.Ticker(symbol)
 
 info = ticker_data.info
@@ -53,6 +54,25 @@ f"# {longName}"
 
 companyOfficers = info.get("companyOfficers")
 companyOfficerName = companyOfficers[0].get("name")
+#
+# google_crawler = GoogleImageCrawler(feeder_threads=1, parser_threads=1, downloader_threads=1, storage={'root_dir': 'images\\'+symbol})
+# google_crawler.crawl(keyword=companyOfficerName, max_num=1)
+
+#pages")
+path = 'D:\Code\PY\StreamlitTest2\\'
+# image_path = os.getcwd()+"\\images\\"+symbol+"\\000001.jpg"
+image_path = path+"images\\"+symbol+"\\"+companyOfficerName
+image_path = image_path + "\\" + os.listdir(image_path)[0]
+# print("")
+print("PATH: "+image_path)
+# image_path = image_path.replace("\\\\","\\")
+image = Image.open(image_path)
+column1, column2 = st.columns(2)
+with column1:
+    st.image(image)
+with column2:
+    f"## {companyOfficerName}"
+
 
 # class MyImageDownloader(ImageDownloader):
 #     def get_filename(self, task, default_ext):
@@ -73,19 +93,6 @@ companyOfficerName = companyOfficers[0].get("name")
 #         return '{}.{}'.format(filename, extension)
 
 # google_crawler = GoogleImageCrawler(feeder_threads=1, parser_threads=1, downloader_threads=1, storage={'root_dir': 'images\\'+symbol}, downloader_cls=MyImageDownloader)
-google_crawler = GoogleImageCrawler(feeder_threads=1, parser_threads=1, downloader_threads=1, storage={'root_dir': 'images\\'+symbol})
-google_crawler.crawl(keyword=companyOfficerName, max_num=1)
-
-path = os.getcwd().removesuffix("pages")
-path = 'D:\Code\PY\StreamlitTest2\pages\\'
-# image_path = os.getcwd()+"\\images\\"+symbol+"\\000001.jpg"
-image_path = path+"images\\"+symbol
-image_path = image_path + "\\" + os.listdir(image_path)[0]
-# print("")
-print("PATH: "+image_path)
-# image_path = image_path.replace("\\\\","\\")
-image = Image.open(image_path)
-st.image(image, companyOfficerName)
 
 # directory = os.getcwd()
 # print(directory)
