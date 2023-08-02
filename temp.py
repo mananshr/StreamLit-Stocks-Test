@@ -1,9 +1,5 @@
-import os
-import base64
 import yfinance
-from icrawler import ImageDownloader
 from icrawler.builtin import GoogleImageCrawler
-from six.moves.urllib.parse import urlparse
 
 symbols = [
         "AAPL",
@@ -69,9 +65,9 @@ for symbol in symbols:
 
     for companyOfficer in companyOfficers:
         companyOfficerName = companyOfficer.get("name")
-        filters = dict(size='large', type='face')
-        google_crawler = GoogleImageCrawler( feeder_threads=1, parser_threads=1, downloader_threads=1,storage={'root_dir': 'images\\'+symbol+"\\"+companyOfficerName})
-        keyword=companyOfficerName+" "+ companyName
+        filters = dict(type='face')
+        google_crawler = GoogleImageCrawler(feeder_threads=1, parser_threads=1, downloader_threads=1, storage={'root_dir': 'images\\'+symbol+"\\"+companyOfficerName})
+        keyword = companyOfficerName + ", " + companyName
         print("Query: "+keyword)
         google_crawler.crawl(keyword, max_num=1, filters=filters)
         # path = 'D:\Code\PY\StreamlitTest2\\'
