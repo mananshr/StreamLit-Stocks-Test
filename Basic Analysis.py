@@ -1,6 +1,10 @@
 import datetime
-
+import subprocess
+import sys
 import streamlit as st
+
+subprocess.check_call([sys.executable, "-m", "pip", "install", "yfinance"])
+
 import yfinance
 
 st.set_page_config(
