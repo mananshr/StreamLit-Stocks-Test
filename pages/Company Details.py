@@ -88,15 +88,22 @@ f"# {longName}"
 path = 'D:\\Code\\PY\\StreamlitTest2\\'
 # print(info)
 
-column1, column2, column3 = st.columns([2, 1, 1], gap="large")
+column1, column2, column3 = st.columns([1, 2, 1], gap="large")
 with column1:
+    exchange = info.get("exchange")
+    "Exchange:"
+    f"### {exchange}"
+    quoteType = info.get("quoteType")
+    "Quote type:"
+    f"#### {quoteType}"
+with column2:
     image_path = path+"images\\"+symbol+"\\logo"
     image_path = image_path + "\\" + os.listdir(image_path)[0]
     image = Image.open(image_path)
     # new_image = Image.new("RGB", image.size, "WHITE") # Create a white rgba background
     # new_image.paste(image, mask=image)
     st.image(image)
-with column2:
+with column3:
     industry = info.get("industry")
     sector = info.get("sector")
     if sector is not None:
@@ -105,13 +112,6 @@ with column2:
     if industry is not None:
         "Industry:"
         f"#### {industry}"
-with column3:
-    exchange = info.get("exchange")
-    "Exchange:"
-    f"### {exchange}"
-    quoteType = info.get("quoteType")
-    "Quote type:"
-    f"#### {quoteType}"
 
 column1, column2, column3 = st.columns(3)
 current_price = info.get("currentPrice")

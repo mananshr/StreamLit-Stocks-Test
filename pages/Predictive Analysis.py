@@ -44,7 +44,7 @@ temp_df = temp_array.reshape(-1, 1)
 print(temp_df)
 
 scaler = MinMaxScaler(feature_range=(0, 1))
-scaled_df = scaler.fit_transform(np.array((temp_df).reshape(-1, 1)))
+scaled_df = scaler.fit_transform(np.array(temp_df.reshape(-1, 1)))
 print("Scaled DF")
 print(scaled_df)
 
@@ -70,19 +70,37 @@ print(x_train.shape)
 # Modeling
 
 model = Sequential()
-model.add(LSTM(50, return_sequences=True, input_shape=(x_train.shape[1],1)))
+model.add(LSTM(50, return_sequences=True, input_shape=(x_train.shape[1], 1)))
 model.add(LSTM(50, return_sequences=False))
 model.add(Dense(50))
-model.add(Dense(1))
+# model.add(Dense(1))
 
-with st.spinner("Running Predictions...."):
+with st.spinner("Running Predictions....[This may take a long time...]"):
     model.compile(optimizer='adam', loss='mean_squared_error')
+    # print(model.summary())
     model.fit(x_train, y_train, batch_size=40, epochs=20)
 st.success('Done!')
 
 test_data = scaled_df[training_data_len - 60:, :]
 x_test = []
-y_test = df[training_data_len:, :]
+
+print(type(df))
+print("Total length:")
+print(len(df.index))
+print("training_data_len:")
+print(training_data_len)
+
+y_test = scaled_df[training_data_len:, :]
+
+if y_test is None:
+    print("y_test is none lol")
+
+try:
+    print("y_test")
+    print(y_test)
+except Exception as exp:
+    print(exp)
+
 for i in range(60, len(test_data)):
     x_test.append(test_data[i-60:i, 0])
 
@@ -92,11 +110,16 @@ x_test = np.reshape(x_test, (x_test.shape[0], x_test.shape[1], 1))
 predictions = model.predict(x_test)
 predictions = scaler.inverse_transform(predictions)
 rmse = np.sqrt(np.mean(predictions-y_test)**2)
+print("rmse")
 print(rmse)
+print("predictions")
+print(predictions.shape)
+print(type(predictions))
+print(predictions)
 
 train = data[:training_data_len]
 val = data[training_data_len:]
-val['predictions'] = predictions
+val['predictions'] = predictions[:, 0]
 fig = plt.figure(figsize=(16, 8))
 plt.title('model')
 plt.xlabel('Date', fontsize=18)
@@ -105,4 +128,14 @@ plt.plot(train['Close'])
 plt.plot(val[['Close', 'predictions']],)
 plt.legend(['train', 'val', 'predictions'], loc='lower right')
 
+st.pyplot(fig)
+
+test = df[training_data_len:]
+fig = plt.figure(figsize=(16,8))
+plt.title('historical price')
+plt.plot(test)
+plt.plot(predictions)
+plt.xlabel('Days', fontsize=18)
+plt.ylabel('Close_Price', fontsize=18)
+plt.legend(['test', 'predictions'], loc='lower right')
 st.pyplot(fig)
