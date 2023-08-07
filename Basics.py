@@ -3,7 +3,7 @@ import subprocess
 import sys
 import streamlit as st
 
-subprocess.check_call([sys.executable, "-m", "pip", "install", "yfinance"])
+# subprocess.check_call([sys.executable, "-m", "pip", "install", "yfinance"])
 
 import yfinance
 
@@ -11,7 +11,15 @@ st.set_page_config(
     page_title="Manan's Stock Watch",
     page_icon="🧊",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="auto",
+    menu_items={
+        'Get Help': "https://github.com/mananshr/StreamLit-Stocks-Test/wiki",
+        'Report a bug': "https://github.com/mananshr/StreamLit-Stocks-Test/issues/new",
+        'About': """
+        # This is an *extremely* cool app!
+        ### 
+        Made by [Manan Sharma](https://github.com/mananshr/)"""
+    }
 )
 
 "# Stock Markets"

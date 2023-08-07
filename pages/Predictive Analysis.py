@@ -9,8 +9,45 @@ from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import LSTM
 
+symbol = "AAPL"
 
-ticker_data = yf.Ticker("AAPL")
+symbol = st.selectbox(
+    "Select a stock to analyse",
+    (
+        "AAPL",
+        "ACN",
+        "ADBE",
+        "ADP",
+        "AMD",
+        "AMZN",
+        "AVGO",
+        "BABA",
+        "BRK-A",
+        "CMCSA",
+        "CSCO",
+        "GILD",
+        "GOOG",
+        "INTC",
+        "JNJ",
+        "JPM",
+        "KO",
+        "MA",
+        "MCD",
+        "META",
+        "MSFT",
+        "NFLX",
+        "NVDA",
+        "ORCL",
+        "PG",
+        "TSLA",
+        "TSM",
+        "V",
+        "WMT",
+        "TM",
+    ),
+)
+
+ticker_data = yf.Ticker(symbol)
 
 df = ticker_data.history(period="1y")
 fig = plt.figure(figsize=(16, 8))
