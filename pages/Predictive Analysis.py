@@ -107,10 +107,12 @@ print(x_train.shape)
 # Modeling
 
 model = Sequential()
-model.add(LSTM(50, return_sequences=True, input_shape=(x_train.shape[1], 1)))
+
+# TODO Temp
+# model.add(LSTM(50, return_sequences=True, input_shape=(x_train.shape[1], 1)))
 model.add(LSTM(50, return_sequences=False))
-model.add(Dense(50))
-# model.add(Dense(1))
+# model.add(Dense(50))
+model.add(Dense(1))
 
 with st.spinner("Running Predictions....[This may take a long time...]"):
     model.compile(optimizer='adam', loss='mean_squared_error')
@@ -145,7 +147,10 @@ x_test = np.array(x_test)
 x_test = np.reshape(x_test, (x_test.shape[0], x_test.shape[1], 1))
 
 predictions = model.predict(x_test)
+
+# TODO Temp
 predictions = scaler.inverse_transform(predictions)
+
 rmse = np.sqrt(np.mean(predictions-y_test)**2)
 print("rmse")
 print(rmse)
@@ -163,16 +168,51 @@ plt.xlabel('Date', fontsize=18)
 plt.ylabel('Close_Price', fontsize=18)
 plt.plot(train['Close'])
 plt.plot(val[['Close', 'predictions']],)
-plt.legend(['train', 'val', 'predictions'], loc='lower right')
+plt.legend(['train', 'actual', 'predictions'], loc='lower right')
 
 st.pyplot(fig)
 
 test = df[training_data_len:]
-fig = plt.figure(figsize=(16,8))
-plt.title('historical price')
+# fig = plt.figure(figsize=(16,8))
+# plt.title('historical price')
+# plt.plot(test)
+# plt.plot(predictions)
+# plt.xlabel('Days', fontsize=18)
+# plt.ylabel('Close_Price', fontsize=18)
+# plt.legend(['test', 'predictions'], loc='lower right')
+# st.pyplot(fig)
+
+# st.write(predictions)
+
+print("Prediction type: ")
+print(type(predictions))
+print(predictions.shape)
+
+print("test data type: ")
+print(type(test))
+print(test.shape)
+
+# test = test[-60:-1]
+
+single_prediction = np.mean(predictions, axis=1)
+print("Single")
+print(single_prediction)
+
+fig = plt.figure(figsize=(16, 8))
+plt.title('predicted price')
 plt.plot(test)
-plt.plot(predictions)
+plt.plot(single_prediction)
 plt.xlabel('Days', fontsize=18)
 plt.ylabel('Close_Price', fontsize=18)
-plt.legend(['test', 'predictions'], loc='lower right')
+plt.legend(['Actual', 'predictions'], loc='lower right')
 st.pyplot(fig)
+
+# test = test[-60:-1]
+# fig = plt.figure(figsize=(16, 8))
+# plt.title('predicted price')
+# plt.plot(test)
+# plt.plot(single_prediction)
+# plt.xlabel('Days', fontsize=18)
+# plt.ylabel('Close_Price', fontsize=18)
+# plt.legend(['Actual', 'predictions'], loc='lower right')
+# st.pyplot(fig)
