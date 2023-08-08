@@ -88,15 +88,15 @@ f"# {longName}"
 path = 'D:\\Code\\PY\\StreamlitTest2\\'
 # print(info)
 
-column1, column2, column3 = st.columns([1, 2, 1], gap="large")
-with column1:
+column1, column2, column3 = st.columns([1, 1, 1], gap="large")
+with column2:
     exchange = info.get("exchange")
     "Exchange:"
     f"### {exchange}"
     quoteType = info.get("quoteType")
     "Quote type:"
     f"#### {quoteType}"
-with column2:
+with column1:
     image_path = path+"images\\"+symbol+"\\logo"
     image_path = image_path + "\\" + os.listdir(image_path)[0]
     image = Image.open(image_path)
